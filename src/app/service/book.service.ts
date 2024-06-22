@@ -17,6 +17,10 @@ export class BookService {
     return this.http.get<Book[]>(`${this.baseUrl}`);
   }
 
+  getPaginationBooks(page: number, pageSize: number): Observable<any>{
+    return this.http.get<any[]>(`${this.baseUrl}/${page}/${pageSize}`);
+  }
+
   getBook(id: number): Observable<Book> {
     return this.http.get<Book>(`${this.baseUrl}/${id}`);
   }

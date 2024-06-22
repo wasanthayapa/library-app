@@ -35,7 +35,7 @@
         <tr>
           <th scope="row">{{($index+1)}}</th>
           <td>
-            <a (click)="viewBook(item.id)">{{item.name}}</a>
+            <a (click)="viewBook(item.id)" >{{item.name}}</a>
           </td>
           <td style="text-align: center;">
             <a (click)="updateBook(item.id)" class="btn btn-warning btn-sm" >
@@ -54,5 +54,35 @@
         }
       </tbody>
     </table>
+    <div class="row">
+      <div class="col-md-4">
+
+        <nav>
+          <ul class="pagination">
+            <li class="page-item" [class.disabled]="first">
+              <a class="page-link" (click)="onPageChange(page - 1)">Previous</a>
+            </li>
+            <li class="page-item" [class.active]="page === p"
+              *ngFor="let p of [].constructor(totalPages); let i = index">
+              <a class="page-link" (click)="onPageChange(i + 1)">{{ i + 1 }}</a>
+            </li>
+            <li class="page-item" [class.disabled]="last">
+              <a class="page-link" (click)="onPageChange(page + 1)">Next</a>
+            </li>
+          </ul>
+        </nav>
+      </div>
+      <div class="col-md-4">
+      </div>
+      <div class="col-md-2 d-flex justify-content-between mb-3">
+        <div class="">
+          <select id="pageSize" class="form-select" [(ngModel)]="size" (change)="onSizeChange(size)">
+            <option *ngFor="let sizeOption of pageSizes" [value]="sizeOption">{{ sizeOption }}</option>
+          </select>
+        </div>
+        <div>
+        </div>
+      </div>
+    </div>
   </div>
 </div>

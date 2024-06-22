@@ -12,7 +12,7 @@ import { AuthorUpdateComponent } from '../author-update/author-update.component'
 })
 export class AuthorListComponent {
   authors: Author[] = [];
-  page = 1;
+  page = 0;
   size = 3;
   totalItems = 0;
   totalPages = 0;

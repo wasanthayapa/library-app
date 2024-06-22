@@ -14,6 +14,13 @@ import { BookCreateComponent } from '../book-create/book-create.component';
 })
 export class BookListComponent {
   books!: Book[];
+  page = 0;
+  size = 3;
+  totalItems = 0;
+  totalPages = 0;
+  first = false;
+  last = true;
+  pageSizes = [2, 3, 4, 5];
 
   constructor(
     private bookService: BookService,
@@ -21,21 +28,39 @@ export class BookListComponent {
   ) { }
 
   ngOnInit(): void {
-    this.bookService.getBooks().subscribe(data => {
-      this.books = data;
+    this.loadBook();
+  }
+  viewBook(bookId: number) {
+    const modalRef = this.modalService.open(BookViewComponent);
+    modalRef.componentInstance.bookId = bookId;
+  }
+
+  createBook() {
+    this.modalService.open(BookCreateComponent);
+  }
+
+  updateBook(bookId: number) {
+    const modalRef = this.modalService.open(BookUpdateComponent);
+    modalRef.componentInstance.bookId = bookId;
+  }
+
+  loadBook() {
+    this.bookService.getPaginationBooks(this.page, this.size).subscribe(data => {
+      this.books = data.content;
+      this.totalItems = data.totalElements
+      this.totalPages = data.totalPages
+      this.first = data.first
+      this.last = data.last
     });
   }
-  viewBook(bookId:number){
-    const modalRef=this.modalService.open(BookViewComponent);
-    modalRef.componentInstance.bookId = bookId;
+  onPageChange(page: number): void {
+    this.page = page-1;
+    this.loadBook();
   }
 
-  createBook(){
-   this.modalService.open(BookCreateComponent);
-  }
-
-  updateBook(bookId:number){
-    const modalRef=this.modalService.open(BookUpdateComponent);
-    modalRef.componentInstance.bookId = bookId;
+  onSizeChange(size: number): void {
+    this.size = size;
+    this.page = 0;
+    this.loadBook();
   }
 }
