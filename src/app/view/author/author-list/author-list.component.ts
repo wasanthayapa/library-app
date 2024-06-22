@@ -12,7 +12,14 @@ import { AuthorUpdateComponent } from '../author-update/author-update.component'
 })
 export class AuthorListComponent {
   authors: Author[] = [];
-
+  page = 1;
+  size = 3;
+  totalItems = 0;
+  totalPages = 0;
+  first=false;
+  last=true;
+  pageSizes = [2, 3, 4, 5];
+  
   constructor(
     private authorService: AuthorService,
     private modalService: NgbModal
@@ -32,8 +39,22 @@ export class AuthorListComponent {
   }
 
   loadAuthor() {
-    this.authorService.getAuthors().subscribe(data => {
-      this.authors = data;
+    this.authorService.getPaginatedData(this.page, this.size).subscribe(data => {
+      this.authors = data.content;
+      this.totalItems=data.totalElements
+      this.totalPages=data.totalPages
+      this.first=data.first
+      this.last=data.last
     });
+  }
+  onPageChange(page: number): void {
+    this.page = page-1;
+    this.loadAuthor();
+  }
+
+  onSizeChange(size: number): void {
+    this.size = size;
+    this.page = 0;
+    this.loadAuthor();
   }
 }

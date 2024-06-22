@@ -16,6 +16,7 @@ import { AuthorUpdateComponent } from './view/author/author-update/author-update
 import { HeaderComponent } from './template/header/header/header.component';
 import { FooterComponent } from './template/footer/footer/footer.component';
 import { SiberBarComponent } from './template/sider-bar/siber-bar/siber-bar.component';
+import { PaginationComponent } from './template/pagination/pagination.component';
 
 @NgModule({
   declarations: [
@@ -29,7 +30,8 @@ import { SiberBarComponent } from './template/sider-bar/siber-bar/siber-bar.comp
     AuthorUpdateComponent,
     HeaderComponent,
     FooterComponent,
-    SiberBarComponent
+    SiberBarComponent,
+    PaginationComponent
   ],
   imports: [
     BrowserModule,

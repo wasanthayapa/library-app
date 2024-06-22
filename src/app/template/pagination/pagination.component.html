@@ -1,0 +1,29 @@
+<div class="row">
+    <div class="col-md-6">
+
+      <nav>
+        <ul class="pagination">
+          <li class="page-item" [class.disabled]="first">
+            <a class="page-link" (click)="onPageChange(page - 1)">Previous</a>
+          </li>
+          <li class="page-item" [class.active]="page === p"
+            *ngFor="let p of [].constructor(totalPages); let i = index">
+            <a class="page-link" (click)="onPageChange(i + 1)">{{ i + 1 }}</a>
+          </li>
+          <li class="page-item" [class.disabled]="last">
+            <a class="page-link" (click)="onPageChange(page + 1)">Next</a>
+          </li>
+        </ul>
+      </nav>
+    </div>
+    <div class="col-md-6 d-flex justify-content-between mb-3">
+      <div class="">
+        <select id="pageSize" class="form-select" [(ngModel)]="size" (change)="onSizeChange(size)"
+          style="margin-left: 10vw;">
+          <option *ngFor="let sizeOption of pageSizes" [value]="sizeOption">{{ sizeOption }}</option>
+        </select>
+      </div>
+      <div>
+      </div>
+    </div>
+  </div>

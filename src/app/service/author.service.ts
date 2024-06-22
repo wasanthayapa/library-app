@@ -11,11 +11,15 @@ import { environment } from '../../environments/environment.development';
 })
 export class AuthorService {
   private baseUrl = `${environment.apiUrl}author`;
-  
+
   constructor(private http: HttpClient) { }
 
   getAuthors(): Observable<Author[]> {
     return this.http.get<Author[]>(`${this.baseUrl}`);
+  }
+
+  getPaginatedData(page: number, pageSize: number): Observable<any> {
+    return this.http.get<any>(`${this.baseUrl}/${page}/${pageSize}`);
   }
 
   getAuthor(id: number): Observable<Author> {
