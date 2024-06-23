@@ -5,6 +5,7 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { Author } from '../../../model/author';
 import { AuthorService } from '../../../service/author.service';
 import { AuthorListComponent } from '../author-list/author-list.component';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-author-update',
@@ -23,14 +24,18 @@ export class AuthorUpdateComponent {
     private fb: FormBuilder,
     private authorService: AuthorService,
     private router: Router,
-    public activeModal: NgbActiveModal
+    public activeModal: NgbActiveModal,
+    private toastr: ToastrService
   ) { }
 
   ngOnInit(): void {
     if (this.authorId) {
       this.authorService.getAuthor(this.authorId).subscribe(data => {
         this.authorUpdateForm.patchValue(data);
-      });
+      }, (error) => {
+        this.toastr.error(error.error, 'Author finding fail');
+      }
+      );
     }
   }
 
@@ -41,8 +46,14 @@ export class AuthorUpdateComponent {
         this.authorService.updateAuthor(this.authorId, author).subscribe(() => {
           this.reloadAuthorList();
           this.closeModal();
-        });
+          this.toastr.success("", 'Author Update successfull');
+        }, (error) => {
+          this.toastr.error(error.error, 'Author Update fail');
+        }
+        );
       }
+    } else {
+      this.toastr.error("", 'Please fill required fields');
     }
   }
   closeModal(): void {

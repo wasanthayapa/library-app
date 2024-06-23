@@ -9,53 +9,35 @@
             <div class="modal-body p-5 pt-0">
                 <div class="mb-3">
                     <label for="name">Name</label>
-                    <input id="name" class="form-control form-control-sm" formControlName="name" required />
-                    @if(this.bookUpdateForm.get('name')?.invalid && (this.bookUpdateForm.get('name')?.dirty ||
-                    this.bookUpdateForm.get('name')?.touched)){
+                    <input id="name" class="form-control form-control-sm" formControlName="name" required
+                        [ngClass]="this.bookUpdateForm.get('name')?.errors?'is-invalid':'is-valid'" />
                     <div class="invalid-feedback">
-                        @if(this.bookUpdateForm.get('name')?.hasError('required')){
-                        <div class="invalid-feedback">
-                            Name is required.
-                        </div>
-                        }
+                        Book Name is required.
                     </div>
-                    }
                 </div>
                 <div class="mb-3">
                     <label for="isbn">ISBN</label>
-                    <input id="isbn" class="form-control form-control-sm" formControlName="isbn" required />
-                    @if(this.bookUpdateForm.get('isbn')?.invalid && (this.bookUpdateForm.get('isbn')?.dirty ||
-                    this.bookUpdateForm.get('isbn')?.touched)){
+                    <input id="isbn" class="form-control form-control-sm" formControlName="isbn" required
+                        [ngClass]="this.bookUpdateForm.get('isbn')?.errors?'is-invalid':'is-valid'" />
                     <div class="invalid-feedback">
-                        @if(this.bookUpdateForm.get('isbn')?.hasError('required')){
-                        <div class="invalid-feedback">
-                            ISBN is required.
-                        </div>
-                        }
+                        ISBN is required.
                     </div>
-                    }
                 </div>
                 <div class="mb-3">
                     <label for="author">Author</label>
-                    <select class="form-control" id="author" formControlName="authorId" >
+                    <select class="form-control" id="author" formControlName="authorId"
+                        [ngClass]="this.bookUpdateForm.get('authorId')?.errors?'is-invalid':'is-valid'">
                         @for (item of authorList; track $index) {
-                            <option value="{{item.id}}">{{item.firstName +" "+item.lastName }}</option>
+                        <option value="{{item.id}}">{{item.firstName +" "+item.lastName }}</option>
                         }
-                      </select>  
-                    @if(this.bookUpdateForm.get('authorId')?.invalid && (this.bookUpdateForm.get('authorId')?.dirty ||
-                    this.bookUpdateForm.get('authorId')?.touched)){
+                    </select>
                     <div class="invalid-feedback">
-                        @if(this.bookUpdateForm.get('authorId')?.hasError('required')){
-                        <div class="invalid-feedback">
-                            Author is required.
-                        </div>
-                        }
+                        Author is required.
                     </div>
-                    }
                 </div>
             </div>
             <div class="modal-footer">
-                <button class=" py-2 btn btn-success btn-sm rounded-3" type="submit">
+                <button class=" py-2 btn btn-warning btn-sm rounded-3" type="submit">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                         class="bi bi-file-earmark-plus-fill" viewBox="0 0 16 16">
                         <path

@@ -4,6 +4,7 @@ import { AuthorService } from '../../../service/author.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { AuthorCreateComponent } from '../author-create/author-create.component';
 import { AuthorUpdateComponent } from '../author-update/author-update.component';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-author-list',
@@ -22,7 +23,8 @@ export class AuthorListComponent {
   
   constructor(
     private authorService: AuthorService,
-    private modalService: NgbModal
+    private modalService: NgbModal,
+    private toastr: ToastrService
   ) { }
 
   ngOnInit(): void {
@@ -39,13 +41,17 @@ export class AuthorListComponent {
   }
 
   loadAuthor() {
-    this.authorService.getPaginatedData(this.page, this.size).subscribe(data => {
+    this.authorService.getPaginatedData(this.page, this.size).
+    subscribe(data => {
       this.authors = data.content;
       this.totalItems=data.totalElements
       this.totalPages=data.totalPages
       this.first=data.first
       this.last=data.last
-    });
+    }, (error) => {
+      this.toastr.error(error.error, 'Authors loading fail');
+    }
+  );
   }
   onPageChange(page: number): void {
     this.page = page-1;

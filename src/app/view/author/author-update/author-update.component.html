@@ -9,33 +9,19 @@
             <div class="modal-body p-5 pt-0">
                 <div class="mb-3">
                     <label for="firstName">First Name</label>
-                    <input id="firstName" class="form-control form-control-sm" formControlName="firstName" required />
-                    @if(this.authorUpdateForm.get('firstName')?.invalid &&
-                    (this.authorUpdateForm.get('firstName')?.dirty ||
-                    this.authorUpdateForm.get('firstName')?.touched)){
+                    <input id="firstName" class="form-control form-control-sm" formControlName="firstName" required
+                        [ngClass]="this.authorUpdateForm.get('firstName')?.errors?'is-invalid':'is-valid'" />
                     <div class="invalid-feedback">
-                        @if(this.authorUpdateForm.get('firstName')?.hasError('required')){
-                        <div class="invalid-feedback">
-                            First Name is required.
-                        </div>
-                        }
+                        First Name is required.
                     </div>
-                    }
                 </div>
                 <div class="mb-3">
                     <label for="lastName">Last Name</label>
-                    <input id="lastName" class="form-control form-control-sm" formControlName="lastName" required />
-                    @if(this.authorUpdateForm.get('lastName')?.invalid && (this.authorUpdateForm.get('lastName')?.dirty
-                    ||
-                    this.authorUpdateForm.get('lastName')?.touched)){
+                    <input id="lastName" class="form-control form-control-sm" formControlName="lastName" required
+                        [ngClass]="this.authorUpdateForm.get('lastName')?.errors?'is-invalid':'is-valid'" />
                     <div class="invalid-feedback">
-                        @if(this.authorUpdateForm.get('lastName')?.hasError('required')){
-                        <div class="invalid-feedback">
-                            Last Name is required.
-                        </div>
-                        }
+                        Last Name is required.
                     </div>
-                    }
                 </div>
 
             </div>

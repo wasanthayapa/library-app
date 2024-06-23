@@ -2,6 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { BookService } from '../../../service/book.service';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { Book } from '../../../model/book';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-book-view',
@@ -14,13 +15,19 @@ export class BookViewComponent implements OnInit {
 
   constructor(
     private bookService: BookService,
-    public activeModal: NgbActiveModal
+    public activeModal: NgbActiveModal,
+    private toastr: ToastrService
+
   ) { }
   ngOnInit(): void {
     if (this.bookId) {
-      this.bookService.getBook(this.bookId).subscribe(data => {
-        this.book = data;
-      });
+      this.bookService.getBook(this.bookId).
+        subscribe(data => {
+          this.book = data;
+        }, (error) => {
+          this.toastr.error(error.error, 'Fail loading Book Details');
+        }
+        );
     }
   }
   closeModal(): void {

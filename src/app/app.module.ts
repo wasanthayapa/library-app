@@ -13,10 +13,11 @@ import { BookViewComponent } from './view/book/book-view/book-view.component';
 import { BookCreateComponent } from './view/book/book-create/book-create.component';
 import { BookUpdateComponent } from './view/book/book-update/book-update.component';
 import { AuthorUpdateComponent } from './view/author/author-update/author-update.component';
-import { HeaderComponent } from './template/header/header/header.component';
-import { FooterComponent } from './template/footer/footer/footer.component';
-import { SiberBarComponent } from './template/sider-bar/siber-bar/siber-bar.component';
-import { PaginationComponent } from './template/pagination/pagination.component';
+import { HeaderComponent } from './template/header/header.component';
+import { FooterComponent } from './template/footer/footer.component';
+import { SiberBarComponent } from './template/siber-bar/siber-bar.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { ToastrModule } from 'ngx-toastr';
 
 @NgModule({
   declarations: [
@@ -31,14 +32,14 @@ import { PaginationComponent } from './template/pagination/pagination.component'
     HeaderComponent,
     FooterComponent,
     SiberBarComponent,
-    PaginationComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     ReactiveFormsModule,
     FormsModule,
-    NgbToastModule,
+    BrowserAnimationsModule,
+    ToastrModule.forRoot(),
   ],
   providers: [
     provideHttpClient()

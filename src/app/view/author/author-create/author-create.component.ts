@@ -4,6 +4,7 @@ import { Author } from '../../../model/author';
 import { Router } from '@angular/router';
 import { AuthorService } from '../../../service/author.service';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-author-create',
@@ -20,7 +21,8 @@ export class AuthorCreateComponent implements OnInit {
     private fb: FormBuilder,
     private authorService: AuthorService,
     private router: Router,
-    public activeModal: NgbActiveModal
+    public activeModal: NgbActiveModal,
+    private toastr: ToastrService
   ) { }
 
   ngOnInit(): void {
@@ -33,7 +35,13 @@ export class AuthorCreateComponent implements OnInit {
         subscribe(() => {
           this.reloadAuthorList();
           this.closeModal();
-        })
+          this.toastr.success("", 'Author creation sucessfull');
+        }, (error) => {
+          this.toastr.error(error.error, 'Author creation fail');
+        }
+        )
+    } else {
+      this.toastr.error("", 'Please fill required fields');
     }
   }
 

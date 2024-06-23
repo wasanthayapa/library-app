@@ -6,6 +6,7 @@ import { AuthorCreateComponent } from '../../author/author-create/author-create.
 import { BookViewComponent } from '../book-view/book-view.component';
 import { BookUpdateComponent } from '../book-update/book-update.component';
 import { BookCreateComponent } from '../book-create/book-create.component';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-book-list',
@@ -24,7 +25,8 @@ export class BookListComponent {
 
   constructor(
     private bookService: BookService,
-    private modalService: NgbModal
+    private modalService: NgbModal,
+    private toastr: ToastrService
   ) { }
 
   ngOnInit(): void {
@@ -45,16 +47,20 @@ export class BookListComponent {
   }
 
   loadBook() {
-    this.bookService.getPaginationBooks(this.page, this.size).subscribe(data => {
-      this.books = data.content;
-      this.totalItems = data.totalElements
-      this.totalPages = data.totalPages
-      this.first = data.first
-      this.last = data.last
-    });
+    this.bookService.getPaginationBooks(this.page, this.size).
+      subscribe(data => {
+        this.books = data.content;
+        this.totalItems = data.totalElements
+        this.totalPages = data.totalPages
+        this.first = data.first
+        this.last = data.last
+      }, (error) => {
+        this.toastr.error(error.error, 'Fail books loading');
+      }
+      );
   }
   onPageChange(page: number): void {
-    this.page = page-1;
+    this.page = page - 1;
     this.loadBook();
   }
 

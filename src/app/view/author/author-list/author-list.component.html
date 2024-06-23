@@ -86,7 +86,10 @@
           <div class="col-md-4">
           </div>
           <div class="col-md-2 d-flex justify-content-between mb-3">
-            <div class="">
+            <div class="col-md-6">
+              <label for="name">Page Size</label>
+            </div>
+            <div class="col-md-6">
               <select id="pageSize" class="form-select" [(ngModel)]="size" (change)="onSizeChange(size)">
                 <option *ngFor="let sizeOption of pageSizes" [value]="sizeOption">{{ sizeOption }}</option>
               </select>

@@ -6,6 +6,7 @@ import { Author } from '../../../model/author';
 import { Book } from '../../../model/book';
 import { AuthorService } from '../../../service/author.service';
 import { BookService } from '../../../service/book.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-book-update',
@@ -13,7 +14,7 @@ import { BookService } from '../../../service/book.service';
   styleUrl: './book-update.component.scss'
 })
 export class BookUpdateComponent {
-  authorList:Author[]=[]
+  authorList: Author[] = []
   @Input() bookId: number | null = null;
 
   bookUpdateForm: FormGroup = this.fb.group({
@@ -27,7 +28,8 @@ export class BookUpdateComponent {
     private bookService: BookService,
     private authorService: AuthorService,
     private router: Router,
-    public activeModal: NgbActiveModal
+    public activeModal: NgbActiveModal,
+    private toastr: ToastrService
   ) { }
 
   ngOnInit(): void {
@@ -40,22 +42,33 @@ export class BookUpdateComponent {
   }
 
   updateBook(): void {
-    if (this.bookUpdateForm.valid) 
-      if(this.bookId){
-      const book: Book = this.bookUpdateForm.value;
-      this.bookService.updateBook(this.bookId,book).
-        subscribe(() => {
-          this.reloadBookList();
-          this.closeModal();
-        })
+    if (this.bookUpdateForm.valid) {
+      if (this.bookId) {
+        const book: Book = this.bookUpdateForm.value;
+        this.bookService.updateBook(this.bookId, book).
+          subscribe(() => {
+            this.reloadBookList();
+            this.closeModal();
+            this.toastr.success('Book sucessfully updated');
+          },
+            (error) => {
+              this.toastr.error(error.error, 'Book update fail');
+            })
       }
-    
+    } else {
+      this.toastr.error("", 'Please fill required fields');
+    }
   }
 
-  getAllAuthorList(){
-    this.authorService.getAuthors().subscribe(data => {
-      this.authorList = data;
-    })
+  getAllAuthorList() {
+    this.authorService.getAuthors().
+      subscribe(data => {
+        this.authorList = data;
+      },
+        (error) => {
+          this.toastr.error(error.error, 'Fail author loading');
+        }
+      )
   }
 
   closeModal(): void {

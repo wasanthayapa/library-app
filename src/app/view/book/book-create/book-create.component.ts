@@ -6,6 +6,8 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { Book } from '../../../model/book';
 import { Author } from '../../../model/author';
 import { AuthorService } from '../../../service/author.service';
+import Swal from 'sweetalert2';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-book-create',
@@ -13,7 +15,7 @@ import { AuthorService } from '../../../service/author.service';
   styleUrl: './book-create.component.scss'
 })
 export class BookCreateComponent {
-  authorList:Author[]=[]
+  authorList: Author[] = []
   bookCreateForm: FormGroup = this.fb.group({
     name: ['', Validators.required],
     isbn: ['', Validators.required],
@@ -25,7 +27,8 @@ export class BookCreateComponent {
     private bookService: BookService,
     private authorService: AuthorService,
     private router: Router,
-    public activeModal: NgbActiveModal
+    public activeModal: NgbActiveModal,
+    private toastr: ToastrService
   ) { }
 
   ngOnInit(): void {
@@ -39,14 +42,25 @@ export class BookCreateComponent {
         subscribe(() => {
           this.reloadBookList();
           this.closeModal();
-        })
+          this.toastr.success('Book sucessfully registered');
+        },
+          (error) => {
+            this.toastr.error(error.error, 'Book registration fail');
+          }
+        )
+    } else {
+      this.toastr.error("", 'Please fill required fields');
     }
   }
-
-  getAllAuthorList(){
-    this.authorService.getAuthors().subscribe(data => {
-      this.authorList = data;
-    })
+  getAllAuthorList() {
+    this.authorService.getAuthors().
+      subscribe(data => {
+        this.authorList = data;
+      },
+        (error) => {
+          this.toastr.error(error.error, 'Fail author loading');
+        }
+      )
   }
 
   closeModal(): void {
