@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Book } from '../../../model/book';
 import { BookService } from '../../../service/book.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
@@ -13,7 +13,7 @@ import { ToastrService } from 'ngx-toastr';
   templateUrl: './book-list.component.html',
   styleUrl: './book-list.component.scss'
 })
-export class BookListComponent {
+export class BookListComponent implements OnInit{
   books!: Book[];
   page = 0;
   size = 3;
@@ -48,17 +48,20 @@ export class BookListComponent {
 
   loadBook() {
     this.bookService.getPaginationBooks(this.page, this.size).
-      subscribe(data => {
-        this.books = data.content;
-        this.totalItems = data.totalElements
-        this.totalPages = data.totalPages
-        this.first = data.first
-        this.last = data.last
-      }, (error) => {
-        this.toastr.error(error.error, 'Fail books loading');
-      }
-      );
+      subscribe({
+        next: (data) => {
+          this.books = data.content;
+          this.totalItems = data.totalElements
+          this.totalPages = data.totalPages
+          this.first = data.first
+          this.last = data.last
+        },
+        error: (error) => {
+          this.toastr.error(error.error, 'Fail books loading');
+        }
+      })
   }
+
   onPageChange(page: number): void {
     this.page = page - 1;
     this.loadBook();

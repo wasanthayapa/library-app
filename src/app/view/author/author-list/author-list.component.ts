@@ -1,4 +1,4 @@
-import { Component, TemplateRef } from '@angular/core';
+import { Component, OnInit, TemplateRef } from '@angular/core';
 import { Author } from '../../../model/author';
 import { AuthorService } from '../../../service/author.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
@@ -11,16 +11,16 @@ import { ToastrService } from 'ngx-toastr';
   templateUrl: './author-list.component.html',
   styleUrl: './author-list.component.scss'
 })
-export class AuthorListComponent {
+export class AuthorListComponent implements OnInit{
   authors: Author[] = [];
   page = 0;
   size = 3;
   totalItems = 0;
   totalPages = 0;
-  first=false;
-  last=true;
+  first = false;
+  last = true;
   pageSizes = [2, 3, 4, 5];
-  
+
   constructor(
     private authorService: AuthorService,
     private modalService: NgbModal,
@@ -42,19 +42,21 @@ export class AuthorListComponent {
 
   loadAuthor() {
     this.authorService.getPaginatedData(this.page, this.size).
-    subscribe(data => {
-      this.authors = data.content;
-      this.totalItems=data.totalElements
-      this.totalPages=data.totalPages
-      this.first=data.first
-      this.last=data.last
-    }, (error) => {
-      this.toastr.error(error.error, 'Authors loading fail');
-    }
-  );
+      subscribe({
+        next: (data) => {
+          this.authors = data.content;
+          this.totalItems = data.totalElements
+          this.totalPages = data.totalPages
+          this.first = data.first
+          this.last = data.last
+        },
+        error: (error) => {
+          this.toastr.error(error.error, 'Authors loading fail');
+        }
+      })
   }
   onPageChange(page: number): void {
-    this.page = page-1;
+    this.page = page - 1;
     this.loadAuthor();
   }
 
