@@ -39,28 +39,32 @@ export class BookCreateComponent {
     if (this.bookCreateForm.valid) {
       const book: Book = this.bookCreateForm.value;
       this.bookService.createBook(book).
-        subscribe(() => {
-          this.reloadBookList();
-          this.closeModal();
-          this.toastr.success('Book sucessfully registered');
-        },
-          (error) => {
+        subscribe({
+          next: () => {
+            this.reloadBookList();
+            this.closeModal();
+            this.toastr.success('Book sucessfully registered');
+          },
+          error: (error) => {
             this.toastr.error(error.error, 'Book registration fail');
           }
-        )
+        })
     } else {
       this.toastr.error("", 'Please fill required fields');
     }
   }
+
+
   getAllAuthorList() {
     this.authorService.getAuthors().
-      subscribe(data => {
-        this.authorList = data;
-      },
-        (error) => {
+      subscribe({
+        next: (data) => {
+          this.authorList = data;
+        },
+        error: (error) => {
           this.toastr.error(error.error, 'Fail author loading');
         }
-      )
+      })
   }
 
   closeModal(): void {

@@ -30,12 +30,15 @@ export class AuthorUpdateComponent {
 
   ngOnInit(): void {
     if (this.authorId) {
-      this.authorService.getAuthor(this.authorId).subscribe(data => {
-        this.authorUpdateForm.patchValue(data);
-      }, (error) => {
-        this.toastr.error(error.error, 'Author finding fail');
-      }
-      );
+      this.authorService.getAuthor(this.authorId).
+        subscribe({
+          next: (data) => {
+            this.authorUpdateForm.patchValue(data);
+          },
+          error: (error) => {
+            this.toastr.error(error.error, 'Author finding fail');
+          }
+        })
     }
   }
 
@@ -43,19 +46,23 @@ export class AuthorUpdateComponent {
     if (this.authorUpdateForm.valid) {
       const author: Author = this.authorUpdateForm.value;
       if (this.authorId) {
-        this.authorService.updateAuthor(this.authorId, author).subscribe(() => {
-          this.reloadAuthorList();
-          this.closeModal();
-          this.toastr.success("", 'Author Update successfull');
-        }, (error) => {
-          this.toastr.error(error.error, 'Author Update fail');
-        }
-        );
+        this.authorService.updateAuthor(this.authorId, author).
+          subscribe({
+            next: () => {
+              this.reloadAuthorList();
+              this.closeModal();
+              this.toastr.success("", 'Author Update successfull');
+            },
+            error: (error) => {
+              this.toastr.error(error.error, 'Author Update fail');
+            }
+          })
       }
     } else {
       this.toastr.error("", 'Please fill required fields');
     }
   }
+
   closeModal(): void {
     this.activeModal.close()
   }

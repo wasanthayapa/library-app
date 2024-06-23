@@ -19,17 +19,21 @@ export class BookViewComponent implements OnInit {
     private toastr: ToastrService
 
   ) { }
+
   ngOnInit(): void {
     if (this.bookId) {
       this.bookService.getBook(this.bookId).
-        subscribe(data => {
-          this.book = data;
-        }, (error) => {
-          this.toastr.error(error.error, 'Fail loading Book Details');
-        }
-        );
+        subscribe({
+          next: (data) => {
+            this.book = data;
+          },
+          error: (error) => {
+            this.toastr.error(error.error, 'Fail loading Book Details');
+          }
+        })
     }
   }
+
   closeModal(): void {
     this.activeModal.close()
   }

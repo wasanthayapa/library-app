@@ -32,14 +32,16 @@ export class AuthorCreateComponent implements OnInit {
     if (this.authorCreateForm.valid) {
       const author: Author = this.authorCreateForm.value;
       this.authorService.createAuthor(author).
-        subscribe(() => {
-          this.reloadAuthorList();
-          this.closeModal();
-          this.toastr.success("", 'Author creation sucessfull');
-        }, (error) => {
-          this.toastr.error(error.error, 'Author creation fail');
-        }
-        )
+        subscribe({
+          next: () => {
+            this.reloadAuthorList();
+            this.closeModal();
+            this.toastr.success("", 'Author creation sucessfull');
+          },
+          error: (error) => {
+            this.toastr.error(error.error, 'Author creation fail');
+          }
+        })
     } else {
       this.toastr.error("", 'Please fill required fields');
     }

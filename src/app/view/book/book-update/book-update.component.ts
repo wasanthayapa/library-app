@@ -35,9 +35,15 @@ export class BookUpdateComponent {
   ngOnInit(): void {
     this.getAllAuthorList();
     if (this.bookId) {
-      this.bookService.getBook(this.bookId).subscribe(data => {
-        this.bookUpdateForm.patchValue(data);
-      });
+      this.bookService.getBook(this.bookId).
+        subscribe({
+          next: (data) => {
+            this.bookUpdateForm.patchValue(data);
+          },
+          error: (error) => {
+            this.toastr.error(error.error, 'Fail book loading');
+          }
+        })
     }
   }
 
@@ -46,14 +52,16 @@ export class BookUpdateComponent {
       if (this.bookId) {
         const book: Book = this.bookUpdateForm.value;
         this.bookService.updateBook(this.bookId, book).
-          subscribe(() => {
-            this.reloadBookList();
-            this.closeModal();
-            this.toastr.success('Book sucessfully updated');
-          },
-            (error) => {
+          subscribe({
+            next: () => {
+              this.reloadBookList();
+              this.closeModal();
+              this.toastr.success('Book sucessfully updated');
+            },
+            error: (error) => {
               this.toastr.error(error.error, 'Book update fail');
-            })
+            }
+          })
       }
     } else {
       this.toastr.error("", 'Please fill required fields');
@@ -62,14 +70,16 @@ export class BookUpdateComponent {
 
   getAllAuthorList() {
     this.authorService.getAuthors().
-      subscribe(data => {
-        this.authorList = data;
-      },
-        (error) => {
+      subscribe({
+        next: (data) => {
+          this.authorList = data;
+        },
+        error: (error) => {
           this.toastr.error(error.error, 'Fail author loading');
         }
-      )
+      })
   }
+
 
   closeModal(): void {
     this.activeModal.close()
