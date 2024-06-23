@@ -1,0 +1,52 @@
+<div class="modal  position-static d-block  " tabindex="-1" role="dialog">
+    <div class="modal-content rounded-4 shadow">
+        <div class="modal-header p-5 pb-4 border-bottom-0">
+            <h5 class="fw-bold mb-0 fs-2">Create Book</h5>
+            <button type="button" (click)="closeModal()" class="btn-close" data-bs-dismiss="modal"
+                aria-label="Close"></button>
+        </div>
+        <form (ngSubmit)="createBook()" [formGroup]="bookCreateForm" class="row g-3 needs-validation" novalidate>
+            <div class="modal-body p-5 pt-0">
+                <div class="mb-3 form-group">
+                    <label for="name">Name</label>
+                    <input id="name" class="form-control form-control-sm" formControlName="name" required
+                        [ngClass]="this.bookCreateForm.get('name')?.errors ? 'is-invalid' : 'is-valid'" />
+                    <div class="invalid-feedback">
+                        Book Name is required.
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label for="isbn">ISBN</label>
+                    <input id="isbn" class="form-control form-control-sm" formControlName="isbn" required
+                        [ngClass]="this.bookCreateForm.get('isbn')?.errors ? 'is-invalid' : 'is-valid'" />
+                    <div class="invalid-feedback">
+                        ISBN is required.
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label for="author">Author</label>
+                    <select class="form-control" id="author" formControlName="authorId"
+                        [ngClass]="this.bookCreateForm.get('authorId')?.errors ? 'is-invalid' : 'is-valid'">
+                        @for (item of authorList; track $index) {
+                        <option value="{{item.id}}">{{item.firstName +" "+item.lastName }}</option>
+                        }
+                    </select>
+                    <div class="invalid-feedback">
+                        Author is required.
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class=" py-2 btn btn-success btn-sm rounded-3" type="submit">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                        class="bi bi-file-earmark-plus-fill" viewBox="0 0 16 16">
+                        <path
+                            d="M9.293 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V4.707A1 1 0 0 0 13.707 4L10 .293A1 1 0 0 0 9.293 0M9.5 3.5v-2l3 3h-2a1 1 0 0 1-1-1M8.5 7v1.5H10a.5.5 0 0 1 0 1H8.5V11a.5.5 0 0 1-1 0V9.5H6a.5.5 0 0 1 0-1h1.5V7a.5.5 0 0 1 1 0" />
+                    </svg>
+                    <i class="bi bi-file-earmark-plus-fill"></i>
+                    Create
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
